@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>login or register</title>
+    <link rel="stylesheet" href="https://unpkg.com/font-awesome@4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="common.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header><a class="user" href="#"><i class="fa fa-user-circle"></i></a></header>
+
+    <main>
+        <div class="flip-modal login">
+            <div class="modal modal-login">
+                <a class="close" href="#"><i class="fa fa-close"></i></a>
+                <div class="tab">
+                    <a class="login active" href="#">登录</a>
+                    <a class="register" href="#">注册</a>
+                </div>
+                <div class="content">
+                    <div class="errormsg"></div>
+                    <form action="#" method="post">
+                        <div class="input-field">
+                            <img class="tag" src="user.png" alt="">
+                            <input name="username" type="text" placeholder="请输入3-8个数字字母或下划线">
+                        </div>
+                        <div class="input-field">
+                            <img class="tag" src="key.png" alt="">
+                            <input name="pwd" type="password" placeholder="请输入6-10个数字字母或下划线">
+                        </div>
+                        <div class="input-field">
+                            <button type="submit">登录</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="modal modal-register">
+                <a class="close" href="#"><i class="fa fa-close"></i></a>
+                <div class="tab">
+                    <a class="login" href="#">登录</a>
+                    <a class="register" href="#">注册</a>
+                </div>
+                <div class="content">
+                    <div class="errormsg"></div>
+                    <form action="#" method="post">
+                        <div class="input-field">
+                            <img class="tag" src="user.png" alt="">
+                            <input name="username" type="text" placeholder="请输入3-8个数字字母或下划线">
+                        </div>
+                        <div class="input-field">
+                            <img class="tag" src="key.png" alt="">
+                            <input name="pwd" type="password" placeholder="请输入6-10个数字字母或下划线">
+                        </div>
+                        <div class="input-field">
+                            <img class="tag" src="key.png" alt="">
+                            <input name="re-pwd" type="password" placeholder="请再次输入密码">
+                        </div>
+                        <div class="input-field">
+                            <button type="submit">注册</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        function $(selector) {
+            return document.querySelector(selector)
+        }
+        function $$(selector) {
+            return document.querySelectorAll(selector)
+        }
+
+        $('.user').onclick = function(e) {
+            e.stopPropagation()
+            $('.user').classList.add('unshow')
+            $('.flip-modal').style.display = 'block'
+        }
+
+        $('.flip-modal').addEventListener('click',function(e) {
+            e.stopPropagation()
+            if (e.target.classList.contains('login')) {
+                $('.flip-modal').classList.add('login')
+                $('.flip-modal').classList.remove('register')
+            }
+            if (e.target.classList.contains('register')) {
+                $('.flip-modal').classList.add('register')
+                $('.flip-modal').classList.remove('login')
+            }
+            if (e.target.classList.contains('fa-close')) {
+                $('.user').classList.remove('unshow')
+                $('.flip-modal').style.display = 'none'
+            }
+        })
+
+        document.onclick = function() {
+            $('.user').classList.remove('unshow')
+            $('.flip-modal').style.display = 'none'
+        }
+
+
+
+        $$('.modal').forEach(function(e) {
+            e.addEventListener('click', function(e) {
+                if (e.target.classList.contains('login')) {
+                    $$('.tab .login').forEach(function(e){
+                        e.classList.add('active')
+                    })
+                    $$('.tab .register').forEach(function(e){
+                        e.classList.remove('active')
+                    })
+                }
+                if (e.target.classList.contains('register')) {
+                    $$('.tab .register').forEach(function(e){
+                        e.classList.add('active')
+                    })
+                    $$('.tab .login').forEach(function(e){
+                        e.classList.remove('active')
+                    })
+                }
+            })
+        })
+
+        $('.modal-login form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            if (!(/^\w{3,8}$/).test($('.modal-login input[name=username]').value)) {
+                $('.modal-login .errormsg').innerText = "用户名需要输入3-8个数字字母或下划线"
+                return false
+            }
+            if (!(/^\w{6,10}$/).test($('.modal-login input[name=pwd]').value)) {
+                $('.modal-login .errormsg').innerText = "密码需要输入6-10个数字字母或下划线"
+                return false
+            }
+            this.submit()
+        })
+
+        $('.modal-register form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            if (!(/^\w{3,8}$/).test($('.modal-register input[name=username]').value)) {
+                $('.modal-register .errormsg').innerText = "用户名需要输入3-8个数字字母或下划线"
+                return false
+            }
+            if (!(/^\w{6,10}$/).test($('.modal-register input[name=pwd]').value)) {
+                $('.modal-register .errormsg').innerText = "密码需要输入6-10个数字字母或下划线"
+                return false
+            }
+            if ($('.modal-register input[name=pwd]').value !== $('.modal-register input[name=re-pwd]').value) {
+                $('.modal-register .errormsg').innerText = "两次输入的密码不一致"
+                return false
+            }
+            this.submit()
+        })
+        
+    </script>
+</body>
+</html>
